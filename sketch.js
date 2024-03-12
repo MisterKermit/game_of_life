@@ -7,7 +7,7 @@ let columns;
 let rows;
 
 function setup() {
-    // frameRate(10);
+    frameRate(10);
     createCanvas(1200, 800);
     columns = width / resolution;
     rows = height / resolution;
@@ -55,7 +55,7 @@ function tallyNeighbors(grid, currentCPosition, currentRPosition) {
 
     for (let i = -1; i < 2; i++) {
         for (let j = -1; j < 2; j++) {
-            let columnPosition = (currentCPosition + j + columns) % columns;
+            let columnPosition = (currentCPosition + i + columns) % columns;
             let rowPosition = (currentRPosition + j + rows) % rows;
             neighborCount += grid[columnPosition][rowPosition];
         }
@@ -79,7 +79,7 @@ function CreateStarting2dArray(columns, rows) {
 function Create2dArray(columns, rows) {
     let emptyArray = new Array(columns);
     for (let i = 0; i < emptyArray.length; i++) {
-        randomizedArray[i] = new Array(rows);
+        emptyArray[i] = new Array(rows);
     }
     return emptyArray;
 }
