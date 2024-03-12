@@ -11,7 +11,7 @@ function setup() {
     createCanvas(1200, 800);
     columns = width / resolution;
     rows = height / resolution;
-    array = Create2dArray(columns, rows);
+    array = CreateStarting2dArray(columns, rows);
 }
 
 function draw() {
@@ -65,13 +65,21 @@ function tallyNeighbors(grid, currentCPosition, currentRPosition) {
 }
 
 
-function Create2dArray(columns, rows) {
-  let columnArray = new Array(columns);
-  for (let i = 0; i < columnArray.length; i++) {
-    columnArray[i] = new Array(rows)
-    for (let j = 0; j < columnArray[i].length; j++) {
-      columnArray[i][j] = floor(random(2));
+function CreateStarting2dArray(columns, rows) {
+  let randomizedArray = new Array(columns);
+  for (let i = 0; i < randomizedArray.length; i++) {
+    randomizedArray[i] = new Array(rows);
+    for (let j = 0; j < randomizedArray[i].length; j++) {
+      randomizedArray[i][j] = floor(random(2));
     }
   }
-  return columnArray;
+  return randomizedArray;
+}
+
+function Create2dArray(columns, rows) {
+    let emptyArray = new Array(columns);
+    for (let i = 0; i < emptyArray.length; i++) {
+        randomizedArray[i] = new Array(rows);
+    }
+    return emptyArray;
 }
