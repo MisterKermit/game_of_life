@@ -7,7 +7,7 @@ let columns;
 let rows;
 
 function setup() {
-    frameRate(10);
+    // frameRate(10);
     createCanvas(1200, 800);
     columns = width / resolution;
     rows = height / resolution;
