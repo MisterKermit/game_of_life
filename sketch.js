@@ -34,9 +34,9 @@ function resume() {
    let NextArray = Create2dArray(columns, rows);
    for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
-        var state = array[i][j];
+        let state = array[i][j];
 
-        var neighbors = tallyNeighbors(array, i, j);
+        let neighbors = tallyNeighbors(array, i, j);
 
         if (state == 0 && neighbors == 3) {
             NextArray[i][j] = 1;
@@ -66,6 +66,6 @@ function tallyNeighbors(grid, currentCPosition, currentRPosition) {
 
 
 function Create2dArray(columns, rows) {
-    columnArray = Array.from(Array(rows), () => new Array(columns).fill(floor(random(2))));
+    columnArray = Array.from(Array(columns), () => new Array(rows).fill(floor(random(2))));
     return columnArray;
 }
