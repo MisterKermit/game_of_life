@@ -31,7 +31,7 @@ function draw() {
 }
 
 function resume() {
-   let NextArray = Create2dArray(columns, rows);
+   let NextArray = CreateEmpty2dArray(columns, rows);
    for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
         let state = array[i][j];
@@ -76,10 +76,14 @@ function CreateStarting2dArray(columns, rows) {
   return randomizedArray;
 }
 
-function Create2dArray(columns, rows) {
+function CreateEmpty2dArray(columns, rows) {
     let emptyArray = new Array(columns);
     for (let i = 0; i < emptyArray.length; i++) {
         emptyArray[i] = new Array(rows);
     }
     return emptyArray;
+}
+
+function pauseGame() {
+    
 }
