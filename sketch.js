@@ -5,10 +5,11 @@ let array;
 let resolution = 10;
 let columns;
 let rows;
+let GamePaused = false;
 
 function setup() {
     
-    createCanvas(displayWidth, displayHeight);
+    createCanvas(800, 600);
     columns = width / resolution;
     rows = height / resolution;
     array = CreateStarting2dArray(columns, rows);
@@ -85,5 +86,5 @@ function CreateEmpty2dArray(columns, rows) {
 }
 
 function pauseGame() {
-    
+
 }
