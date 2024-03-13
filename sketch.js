@@ -8,7 +8,7 @@ let rows;
 
 function setup() {
     
-    createCanvas(1200, 800);
+    createCanvas(displayWidth, displayHeight);
     columns = width / resolution;
     rows = height / resolution;
     array = CreateStarting2dArray(columns, rows);
