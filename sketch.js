@@ -1,30 +1,33 @@
 //Daniel Lin Create Task
 
-let array;
-
+let stateArray;
+var gridDiv = document.getElementById('GridColumn');
 let resolution = 10;
 let columns;
 let rows;
 let GamePaused = false;
-var canvas;
+let canvas;
+var canvasWidth = gridDiv.offsetWidth;
+var canvasHeight = gridDiv.offsetHeight;
+
 
 function setup() {
-    framerate(10);
-    canvas = createCanvas(800, 600);
-    canvas.parent("divForCanvas");
+    frameRate(10);
+    canvas = createCanvas(canvasWidth, canvasHeight);
+    canvas.parent("GridColumn");
     columns = width / resolution;
     rows = height / resolution;
-    array = CreateStarting2dArray(columns, rows);
+    stateArray = CreateStarting2dArray(columns, rows);
 }
 
 function draw() {
-    
+
     background(0);
     for (let i = 0; i < columns; i++) {
         for (let j = 0; j < rows; j++) {
             let x = i * resolution;
             let y = j * resolution;
-            if (array[i][j] == 1) {
+            if (stateArray[i][j] == 1) {
                 fill(255);
                 stroke(0);
                 rect(x, y, resolution - 1, resolution - 1);
@@ -35,7 +38,7 @@ function draw() {
     {
         resume();
     }
- 
+
 }
 
 function resume() {
@@ -43,9 +46,9 @@ function resume() {
     let NextArray = CreateEmpty2dArray(columns, rows);
    for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
-        let state = array[i][j];
+        let state = stateArray[i][j];
 
-        let neighbors = tallyNeighbors(array, i, j);
+        let neighbors = tallyNeighbors(stateArray, i, j);
 
         if (state == 0 && neighbors == 3) {
             NextArray[i][j] = 1;
@@ -56,7 +59,7 @@ function resume() {
         }
     }
    } 
-   array = NextArray;
+   stateArray = NextArray;
 }
 
 function tallyNeighbors(grid, currentCPosition, currentRPosition) {
@@ -94,6 +97,7 @@ function CreateEmpty2dArray(columns, rows) {
 }
 
 function pauseGame() {
-
-    frameRate(0);
+  GamePaused = true;
+  frameRate(0);
+  
 }
