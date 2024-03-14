@@ -8,7 +8,6 @@ let rows;
 let GamePaused = false;
 
 function setup() {
-    
     createCanvas(800, 600);
     columns = width / resolution;
     rows = height / resolution;
@@ -16,6 +15,7 @@ function setup() {
 }
 
 function draw() {
+    framerate(10);
     background(0);
     for (let i = 0; i < columns; i++) {
         for (let j = 0; j < rows; j++) {
@@ -28,11 +28,16 @@ function draw() {
             }
         }
     }
-    resume();
+    if (!GamePaused)
+    {
+        resume();
+    }
+ 
 }
 
 function resume() {
-   let NextArray = CreateEmpty2dArray(columns, rows);
+    frameRate(10);
+    let NextArray = CreateEmpty2dArray(columns, rows);
    for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
         let state = array[i][j];
@@ -87,4 +92,5 @@ function CreateEmpty2dArray(columns, rows) {
 
 function pauseGame() {
 
+    frameRate(0);
 }
