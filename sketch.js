@@ -6,10 +6,12 @@ let resolution = 10;
 let columns;
 let rows;
 let GamePaused = false;
+let canvas;
 
 function setup() {
     framerate(10);
-    createCanvas(800, 600);
+    canvas = createCanvas(800, 600);
+    canvas.parent("divForCanvas");
     columns = width / resolution;
     rows = height / resolution;
     array = CreateStarting2dArray(columns, rows);
