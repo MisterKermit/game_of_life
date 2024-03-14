@@ -8,6 +8,7 @@ let rows;
 let GamePaused = false;
 
 function setup() {
+    framerate(10);
     createCanvas(800, 600);
     columns = width / resolution;
     rows = height / resolution;
@@ -15,7 +16,7 @@ function setup() {
 }
 
 function draw() {
-    framerate(10);
+    
     background(0);
     for (let i = 0; i < columns; i++) {
         for (let j = 0; j < rows; j++) {
