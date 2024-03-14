@@ -6,7 +6,7 @@ let resolution = 10;
 let columns;
 let rows;
 let GamePaused = false;
-let canvas;
+var canvas;
 
 function setup() {
     framerate(10);
