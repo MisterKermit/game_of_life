@@ -96,8 +96,12 @@ function CreateEmpty2dArray(columns, rows) {
     return emptyArray;
 }
 
-function pauseGame() {
-  GamePaused = true;
-  frameRate(0);
-  
+function togglePause() {
+  if (GamePaused) {
+    GamePaused = false;
+    frameRate(10);
+  } else {
+    GamePaused = true;
+    frameRate(0);
+  }
 }
