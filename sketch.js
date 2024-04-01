@@ -92,6 +92,9 @@ function CreateEmpty2dArray(columns, rows) {
     let emptyArray = new Array(columns);
     for (let i = 0; i < emptyArray.length; i++) {
         emptyArray[i] = new Array(rows);
+        for (let j = 0; j < emptyArray[i].length; j++) {
+            emptyArray[i][j] = new Cell(i, k, 0);
+        }
 
     }
     return emptyArray;
