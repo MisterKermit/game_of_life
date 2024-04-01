@@ -27,7 +27,7 @@ function draw() {
         for (let j = 0; j < rows; j++) {
             let x = i * resolution;
             let y = j * resolution;
-            if (stateArray[i][j] == 1) {
+            if (stateArray[i][j].state == 1) {
                 fill(255);
                 stroke(0);
                 rect(x, y, resolution - 1, resolution - 1);
