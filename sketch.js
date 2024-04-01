@@ -38,7 +38,7 @@ function draw() {
     {
         resume();
     }
-
+    onClick();
 }
 
 function resume() {
@@ -103,7 +103,7 @@ class Cell {
         this.xPosition = xPosition;
         this.yPosition = yPosition; 
         this.count = 0;
-        this.state = state
+        this.state = state;
     }
 
 
