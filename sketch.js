@@ -46,16 +46,16 @@ function resume() {
     let NextArray = CreateEmpty2dArray(columns, rows);
    for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
-        let state = stateArray[i][j];
+        let state = stateArray[i][j].state;
 
         let neighbors = tallyNeighbors(stateArray, i, j);
 
         if (state == 0 && neighbors == 3) {
-            NextArray[i][j] = 1;
+            NextArray[i][j].state = 1;
         } else if (state == 1 && (neighbors < 2 || neighbors > 3)) {
-            NextArray[i][j] = 0;
+            NextArray[i][j].state = 0;
         } else {
-            NextArray[i][j] = state;
+            NextArray[i][j].state = state;
         }
     }
    } 
@@ -69,10 +69,10 @@ function tallyNeighbors(grid, currentCPosition, currentRPosition) {
         for (let j = -1; j < 2; j++) {
             let columnPosition = (currentCPosition + i + columns) % columns;
             let rowPosition = (currentRPosition + j + rows) % rows;
-            neighborCount += grid[columnPosition][rowPosition];
+            neighborCount += grid[columnPosition][rowPosition].state;
         }
     }
-    neighborCount -= grid[currentCPosition][currentRPosition];
+    neighborCount -= grid[currentCPosition][currentRPosition].state;
     return neighborCount;
 }
 
@@ -82,7 +82,7 @@ function CreateStarting2dArray(columns, rows) {
   for (let i = 0; i < randomizedArray.length; i++) {
     randomizedArray[i] = new Array(rows);
     for (let j = 0; j < randomizedArray[i].length; j++) {
-      randomizedArray[i][j] = floor(random(2));
+      randomizedArray[i][j] = new Cell(i, j, floor(random(2)));
     }
   }
   return randomizedArray;
@@ -92,8 +92,21 @@ function CreateEmpty2dArray(columns, rows) {
     let emptyArray = new Array(columns);
     for (let i = 0; i < emptyArray.length; i++) {
         emptyArray[i] = new Array(rows);
+
     }
     return emptyArray;
+}
+
+class Cell {
+    
+    constructor(xPosition, yPosition, state) {
+        this.xPosition = xPosition;
+        this.yPosition = yPosition; 
+        this.count = 0;
+        this.state = state
+    }
+
+
 }
 
 function togglePause() {
@@ -103,5 +116,12 @@ function togglePause() {
   } else {
     GamePaused = true;
     frameRate(0);
+  }
+}
+function onClick() {
+  if (mouseIsPressed) {
+    x = (mouseX / canvasWidth);
+    y = (mouseY / canvasHeight);
+    stateArray[x][y].state = 1;
   }
 }
