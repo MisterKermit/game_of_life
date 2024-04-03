@@ -27,7 +27,7 @@ function draw() {
         for (let j = 0; j < rows; j++) {
             let x = i * resolution;
             let y = j * resolution;
-            if (stateArray[i][j].state == 1) {
+            if (stateArray[i][j].getState() == 1) {
                 fill(255);
                 stroke(0);
                 rect(x, y, resolution - 1, resolution - 1);
@@ -38,7 +38,7 @@ function draw() {
     {
         resume();
     }
-    onClick();
+    // onClick();
 }
 
 function resume() {
@@ -46,16 +46,16 @@ function resume() {
     let NextArray = CreateEmpty2dArray(columns, rows);
    for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
-        let state = stateArray[i][j].state;
+        let state = stateArray[i][j].getState();
 
         let neighbors = tallyNeighbors(stateArray, i, j);
 
         if (state == 0 && neighbors == 3) {
-            NextArray[i][j].state = 1;
+            NextArray[i][j].setState(1);
         } else if (state == 1 && (neighbors < 2 || neighbors > 3)) {
-            NextArray[i][j].state = 0;
+            NextArray[i][j].setState(0);
         } else {
-            NextArray[i][j].state = state;
+            NextArray[i][j].setState(state);
         }
     }
    } 
@@ -69,10 +69,10 @@ function tallyNeighbors(grid, currentCPosition, currentRPosition) {
         for (let j = -1; j < 2; j++) {
             let columnPosition = (currentCPosition + i + columns) % columns;
             let rowPosition = (currentRPosition + j + rows) % rows;
-            neighborCount += grid[columnPosition][rowPosition].state;
+            neighborCount += grid[columnPosition][rowPosition].getState();
         }
     }
-    neighborCount -= grid[currentCPosition][currentRPosition].state;
+    neighborCount -= grid[currentCPosition][currentRPosition].getState();
     return neighborCount;
 }
 
@@ -105,10 +105,24 @@ class Cell {
     constructor(xPosition, yPosition, state) {
         this.xPosition = xPosition;
         this.yPosition = yPosition; 
-        this.count = 0;
+        // this.count = 0;
         this.state = state;
     }
 
+    getState() {
+        return this.state;
+    }
+
+    setState(setState) {
+        if (setState == 0) {
+            this.state = 0;
+        } else if (setState == 1) {
+            this.state = 1;
+        } else {
+            this.state = this.state;
+        }
+        
+    }
 
 }
 
@@ -125,6 +139,6 @@ function onClick() {
   if (mouseIsPressed) {
     x = (mouseX / canvasWidth);
     y = (mouseY / canvasHeight);
-    stateArray[x][y].state = 1;
+    stateArray[x][y].setState(1);
   }
 }
