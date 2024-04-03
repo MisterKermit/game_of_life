@@ -27,7 +27,7 @@ function draw() {
         for (let j = 0; j < rows; j++) {
             let x = i * resolution;
             let y = j * resolution;
-            if (stateArray[i][j].getState() == 1) {
+            if (stateArray[i][j].Cell.getState() == 1) {
                 fill(255);
                 stroke(0);
                 rect(x, y, resolution - 1, resolution - 1);
@@ -46,16 +46,16 @@ function resume() {
     let NextArray = CreateEmpty2dArray(columns, rows);
    for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
-        let state = stateArray[i][j].getState();
+        let state = stateArray[i][j].Cell.getState();
 
         let neighbors = tallyNeighbors(stateArray, i, j);
 
         if (state == 0 && neighbors == 3) {
-            NextArray[i][j].setState(1);
+            NextArray[i][j].Cell.setState(1);
         } else if (state == 1 && (neighbors < 2 || neighbors > 3)) {
-            NextArray[i][j].setState(0);
+            NextArray[i][j].Cell.setState(0);
         } else {
-            NextArray[i][j].setState(state);
+            NextArray[i][j].Cell.setState(state);
         }
     }
    } 
@@ -69,10 +69,10 @@ function tallyNeighbors(grid, currentCPosition, currentRPosition) {
         for (let j = -1; j < 2; j++) {
             let columnPosition = (currentCPosition + i + columns) % columns;
             let rowPosition = (currentRPosition + j + rows) % rows;
-            neighborCount += grid[columnPosition][rowPosition].getState();
+            neighborCount += grid[columnPosition][rowPosition].Cell.getState();
         }
     }
-    neighborCount -= grid[currentCPosition][currentRPosition].getState();
+    neighborCount -= grid[currentCPosition][currentRPosition].Cell.getState();
     return neighborCount;
 }
 
@@ -95,17 +95,15 @@ function CreateEmpty2dArray(columns, rows) {
         for (let j = 0; j < emptyArray[i].length; j++) {
             emptyArray[i][j] = new Cell(i, k, 0);
         }
-
     }
     return emptyArray;
 }
 
 class Cell {
-    
+
     constructor(xPosition, yPosition, state) {
         this.xPosition = xPosition;
         this.yPosition = yPosition; 
-        // this.count = 0;
         this.state = state;
     }
 
@@ -123,7 +121,6 @@ class Cell {
         }
         
     }
-
 }
 
 function togglePause() {
@@ -139,6 +136,6 @@ function onClick() {
   if (mouseIsPressed) {
     x = (mouseX / canvasWidth);
     y = (mouseY / canvasHeight);
-    stateArray[x][y].setState(1);
+    stateArray[x][y].Cell.setState(1);
   }
 }
