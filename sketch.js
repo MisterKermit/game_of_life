@@ -5,6 +5,8 @@ var gridDiv = document.getElementById('GridColumn');
 let resolution = 10;
 let columns;
 let rows;
+let temp;
+let len;
 let GamePaused = false;
 let canvas;
 var canvasWidth = gridDiv.offsetWidth;
@@ -17,6 +19,8 @@ function setup() {
     canvas.parent("GridColumn");
     columns = width / resolution;
     rows = height / resolution;
+    temp = height > width ? width: height;
+    len = temp / resolution;
     stateArray = CreateStarting2dArray(columns, rows);
 }
 
@@ -27,7 +31,7 @@ function draw() {
         for (let j = 0; j < rows; j++) {
             let x = i * resolution;
             let y = j * resolution;
-            if (stateArray[i][j].getState() == 1) {
+            if (stateArray[i][j].cellState == 1) {
                 fill(255);
                 stroke(0);
                 rect(x, y, resolution - 1, resolution - 1);
@@ -38,7 +42,13 @@ function draw() {
     {
         resume();
     }
-    // onClick();
+  if (mouseIsPressed) {
+    x = floor(mouseX / len);
+    y = floor(mouseY / len);
+    console.log(x);
+    console.log(y);
+    stateArray[x][y].setState(1);
+  }
 }
 
 function resume() {
@@ -46,8 +56,8 @@ function resume() {
     let NextArray = CreateEmpty2dArray(columns, rows);
    for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
-        let state = stateArray[i][j].getState();
-
+        let state = stateArray[i][j].cellState;
+        
         let neighbors = tallyNeighbors(stateArray, i, j);
 
         if (state == 0 && neighbors == 3) {
@@ -65,14 +75,14 @@ function resume() {
 function tallyNeighbors(grid, currentCPosition, currentRPosition) {
     let neighborCount = 0;
 
-    for (let i = -1; i < 2; i++) {
-        for (let j = -1; j < 2; j++) {
+    for (let i = -1; i <= 1; i++) {
+        for (let j = -1; j <= 1; j++) {
             let columnPosition = (currentCPosition + i + columns) % columns;
             let rowPosition = (currentRPosition + j + rows) % rows;
-            neighborCount += grid[columnPosition][rowPosition].getState();
+            neighborCount += grid[columnPosition][rowPosition].cellState;
         }
     }
-    neighborCount -= grid[currentCPosition][currentRPosition].getState();
+    neighborCount -= grid[currentCPosition][currentRPosition].cellState;
     return neighborCount;
 }
 
@@ -93,7 +103,7 @@ function CreateEmpty2dArray(columns, rows) {
     for (let i = 0; i < emptyArray.length; i++) {
         emptyArray[i] = new Array(rows);
         for (let j = 0; j < emptyArray[i].length; j++) {
-            emptyArray[i][j] = new Cell(i, k, 0);
+            emptyArray[i][j] = new Cell(i, j, null);
         }
     }
     return emptyArray;
@@ -107,10 +117,6 @@ class Cell {
         this.cellState = state;
     }
 
-    getState() {
-        return this.cellState;
-    }
-
     setState(setState) {
         if (setState == 0) {
             this.cellState = 0;
@@ -119,7 +125,7 @@ class Cell {
         } else {
             this.cellState = this.cellState;
         }
-        
+
     }
 }
 
@@ -134,8 +140,10 @@ function togglePause() {
 }
 function onClick() {
   if (mouseIsPressed) {
-    x = (mouseX / canvasWidth);
-    y = (mouseY / canvasHeight);
+    x = floor(mouseX / len);
+    y = floor(mouseY / len);
+    console.log(x);
+    console.log(y);
     stateArray[x][y].setState(1);
   }
 }
