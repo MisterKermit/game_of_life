@@ -45,8 +45,10 @@ function draw() {
   }
 
   if (GamePaused) {
+    onClick();
     resume(true);
   } else {
+    onClick();
     resume(false);
   }
 
@@ -55,12 +57,12 @@ function draw() {
 function resume(isPaused) {
   frameRate(10);
   let NextArray = CreateEmpty2dArray(columns, rows);
-  if (isPaused) {
+  if (!isPaused) {
     for (let i = 0; i < columns; i++) {
         for (let j = 0; j < rows; j++) {
           let state = stateArray[i][j].cellState;
           let neighbors = tallyNeighbors(stateArray, i, j);
-    
+
           if (state == 0 && neighbors == 3) {
             NextArray[i][j].setState(1);
           } else if (state == 1 && (neighbors < 2 || neighbors > 3)) {
@@ -71,10 +73,10 @@ function resume(isPaused) {
         }
       }
   } else { 
-    onClick(stateArray, NextArray);
+    NextArray = stateArray;
   }
-  
-    
+
+
   stateArray = NextArray;
 }
 
@@ -137,14 +139,12 @@ class Cell {
 function togglePause() {
   if (GamePaused) {
     GamePaused = false;
-    frameRate(10);
   } else {
     GamePaused = true;
-    stateArray = NextArray;
   }
 }
 
-function onClick(stateArray, nextArray) {
+function onClick() {
     if (mouseIsPressed) {
       x = floor(mouseX / resolution);
       y = floor(mouseY / resolution);
@@ -158,6 +158,5 @@ function onClick(stateArray, nextArray) {
         }
       }  
     }
-    stateArray = nextArray;
-  }
+}
 
