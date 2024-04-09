@@ -44,32 +44,36 @@ function draw() {
     }
   }
 
-  if (!GamePaused) {
-    resume();
-    onClick();
+  if (GamePaused) {
+    resume(true);
   } else {
-    onClick();
+    resume(false);
   }
 
 }
 
-function resume() {
+function resume(isPaused) {
   frameRate(10);
   let NextArray = CreateEmpty2dArray(columns, rows);
-  for (let i = 0; i < columns; i++) {
-    for (let j = 0; j < rows; j++) {
-      let state = stateArray[i][j].cellState;
-      let neighbors = tallyNeighbors(stateArray, i, j);
-
-      if (state == 0 && neighbors == 3) {
-        NextArray[i][j].setState(1);
-      } else if (state == 1 && (neighbors < 2 || neighbors > 3)) {
-        NextArray[i][j].setState(0);
-      } else {
-        NextArray[i][j].setState(state);
+  if (isPaused) {
+    for (let i = 0; i < columns; i++) {
+        for (let j = 0; j < rows; j++) {
+          let state = stateArray[i][j].cellState;
+          let neighbors = tallyNeighbors(stateArray, i, j);
+    
+          if (state == 0 && neighbors == 3) {
+            NextArray[i][j].setState(1);
+          } else if (state == 1 && (neighbors < 2 || neighbors > 3)) {
+            NextArray[i][j].setState(0);
+          } else {
+            NextArray[i][j].setState(state);
+          }
+        }
       }
-    }
+  } else { 
+    onClick(stateArray, NextArray);
   }
+  
     
   stateArray = NextArray;
 }
@@ -140,7 +144,7 @@ function togglePause() {
   }
 }
 
-function onClick() {
+function onClick(stateArray, nextArray) {
     if (mouseIsPressed) {
       x = floor(mouseX / resolution);
       y = floor(mouseY / resolution);
@@ -154,5 +158,6 @@ function onClick() {
         }
       }  
     }
+    stateArray = nextArray;
   }
 
