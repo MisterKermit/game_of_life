@@ -2,25 +2,30 @@
 
 let stateArray;
 var gridDiv = document.getElementById('GridColumn');
-let resolution = 10;
+let resolution;
 let columns;
 let rows;
 let temp;
 let len;
 let GamePaused = false;
 let canvas;
-var canvasWidth = gridDiv.offsetWidth;
-var canvasHeight = gridDiv.offsetHeight;
+var canvasWidth;
+var canvasHeight;
 
 
 function setup() {
   frameRate(10);
+  
+  resolution = 10;
+  canvasWidth = width;
+  canvasHeight = height;
+  
+  columns = width / resolution;
+  rows = height/ resolution;
+  console.log(rows);
   canvas = createCanvas(canvasWidth, canvasHeight);
   canvas.parent("GridColumn");
-  columns = width / resolution;
-  rows = height / resolution;
-  // temp = height > width ? width : height;
-  // len = temp / resolution;
+  
   stateArray = CreateStarting2dArray(columns, rows);
 }
 
@@ -41,13 +46,7 @@ function draw() {
 
   if (!GamePaused) {
     resume();
-    if (mouseIsPressed) {
-      // x = floor(mouseX / len);
-      // y = floor(mouseY / len);
-      // console.log(x);
-      // console.log(y);
-      // stateArray[x][y].setState(1);
-    }
+
   }
 
 
@@ -70,6 +69,13 @@ function resume() {
         NextArray[i][j].setState(state);
       }
     }
+  }
+  if (mouseIsPressed) {
+    x = floor(mouseX / resolution);
+    y = floor(mouseY / resolution);
+    console.log(x / resolution);
+    console.log(y / resolution);
+    stateArray[x][y].setState(1);
   }
   stateArray = NextArray;
 }
@@ -139,14 +145,15 @@ function togglePause() {
     frameRate(0);
   }
 }
-// function onClick() {
-//   if (mouseIsPressed) {
-//     x = floor(mouseX / len);
-//     y = floor(mouseY / len);
-//     if (stateArray[x] && stateArray[x][y]) {
-//       console.log(x);
-//       console.log(y);
-//       stateArray[x][y].setState(1);
-//     }
-//   }
-// }
+
+function onClick() {
+  if (mouseIsPressed) {
+    x = floor(mouseX / len);
+    y = floor(mouseY / len);
+    if (stateArray[x] && stateArray[x][y]) {
+      console.log(x);
+      console.log(y);
+      stateArray[x][y].setState(1);
+    }
+  }
+}
