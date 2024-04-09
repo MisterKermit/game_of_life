@@ -15,17 +15,17 @@ var canvasHeight;
 
 function setup() {
   frameRate(10);
-  
+
   resolution = 10;
-  canvasWidth = width;
-  canvasHeight = height;
-  
-  columns = width / resolution;
-  rows = height/ resolution;
+  canvasWidth = 800;
+  canvasHeight = 600;
+
+  columns = canvasWidth / resolution;
+  rows = canvasHeight / resolution;
   console.log(rows);
   canvas = createCanvas(canvasWidth, canvasHeight);
   canvas.parent("GridColumn");
-  
+
   stateArray = CreateStarting2dArray(columns, rows);
 }
 
@@ -46,9 +46,10 @@ function draw() {
 
   if (!GamePaused) {
     resume();
-
+    onClick();
+  } else {
+    onClick();
   }
-
 
 }
 
@@ -58,7 +59,6 @@ function resume() {
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
       let state = stateArray[i][j].cellState;
-
       let neighbors = tallyNeighbors(stateArray, i, j);
 
       if (state == 0 && neighbors == 3) {
@@ -70,13 +70,7 @@ function resume() {
       }
     }
   }
-  if (mouseIsPressed) {
-    x = floor(mouseX / resolution);
-    y = floor(mouseY / resolution);
-    console.log(x / resolution);
-    console.log(y / resolution);
-    stateArray[x][y].setState(1);
-  }
+    
   stateArray = NextArray;
 }
 
@@ -147,13 +141,18 @@ function togglePause() {
 }
 
 function onClick() {
-  if (mouseIsPressed) {
-    x = floor(mouseX / len);
-    y = floor(mouseY / len);
-    if (stateArray[x] && stateArray[x][y]) {
-      console.log(x);
-      console.log(y);
-      stateArray[x][y].setState(1);
+    if (mouseIsPressed) {
+      x = floor(mouseX / resolution);
+      y = floor(mouseY / resolution);
+      console.log(floor(x / resolution));
+      console.log(floor(y / resolution));
+      if (x <= columns && y <= rows) {
+        if (stateArray[x][y].cellState == 1) {
+          stateArray[x][y].setState(0);
+        } else {
+          stateArray[x][y].setState(1);
+        }
+      }  
     }
   }
-}
+
