@@ -136,7 +136,7 @@ function togglePause() {
     frameRate(10);
   } else {
     GamePaused = true;
-    frameRate(0);
+    stateArray = NextArray;
   }
 }
 
