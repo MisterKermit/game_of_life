@@ -15,17 +15,18 @@ var canvasHeight;
 
 function setup() {
   frameRate(10);
-  
+
   resolution = 10;
-  canvasWidth = width;
-  canvasHeight = height;
-  
-  columns = width / resolution;
-  rows = height/ resolution;
+  canvasWidth = document.getElementById("GridColumn").offsetWidth;
+  canvasHeight = document.getElementById("GridColumn").offsetHeight;
+  console.log(canvasWidth, canvasHeight);
+
+  columns = floor(canvasWidth / resolution);
+  rows = floor(canvasHeight / resolution);
   console.log(rows);
   canvas = createCanvas(canvasWidth, canvasHeight);
   canvas.parent("GridColumn");
-  
+
   stateArray = CreateStarting2dArray(columns, rows);
 }
 
@@ -44,38 +45,36 @@ function draw() {
     }
   }
 
-  if (!GamePaused) {
-    resume();
-
+  if (GamePaused) {
+    onClick();
+    resume(true);
+  } else {
+    onClick();
+    resume(false);
   }
-
 
 }
 
-function resume() {
+function resume(isPaused) {
   frameRate(10);
   let NextArray = CreateEmpty2dArray(columns, rows);
-  for (let i = 0; i < columns; i++) {
-    for (let j = 0; j < rows; j++) {
-      let state = stateArray[i][j].cellState;
+  if (!isPaused) {
+    for (let i = 0; i < columns; i++) {
+        for (let j = 0; j < rows; j++) {
+          let state = stateArray[i][j].cellState;
+          let neighbors = tallyNeighbors(stateArray, i, j);
 
-      let neighbors = tallyNeighbors(stateArray, i, j);
-
-      if (state == 0 && neighbors == 3) {
-        NextArray[i][j].setState(1);
-      } else if (state == 1 && (neighbors < 2 || neighbors > 3)) {
-        NextArray[i][j].setState(0);
-      } else {
-        NextArray[i][j].setState(state);
+          if (state == 0 && neighbors == 3) {
+            NextArray[i][j].setState(1);
+          } else if (state == 1 && (neighbors < 2 || neighbors > 3)) {
+            NextArray[i][j].setState(0);
+          } else {
+            NextArray[i][j].setState(state);
+          }
+        }
       }
-    }
-  }
-  if (mouseIsPressed) {
-    x = floor(mouseX / resolution);
-    y = floor(mouseY / resolution);
-    console.log(x / resolution);
-    console.log(y / resolution);
-    stateArray[x][y].setState(1);
+  } else { 
+    NextArray = stateArray;
   }
   stateArray = NextArray;
 }
@@ -119,8 +118,8 @@ function CreateEmpty2dArray(columns, rows) {
 
 class Cell {
   cellState = 0;
+  
   constructor(state) {
-
     this.cellState = state;
   }
 
@@ -137,23 +136,45 @@ class Cell {
 }
 
 function togglePause() {
+  let h1 = document.createElement('H1');
+  h1.innerHTML = "Description";
   if (GamePaused) {
     GamePaused = false;
-    frameRate(10);
   } else {
     GamePaused = true;
-    frameRate(0);
   }
 }
 
 function onClick() {
-  if (mouseIsPressed) {
-    x = floor(mouseX / len);
-    y = floor(mouseY / len);
-    if (stateArray[x] && stateArray[x][y]) {
-      console.log(x);
-      console.log(y);
-      stateArray[x][y].setState(1);
+ 
+    if (mouseIsPressed) {
+      x = floor(mouseX / resolution);
+      y = floor(mouseY / resolution);
+      console.log(floor(x / resolution));
+      console.log(floor(y / resolution));
+      if (x < columns && y < rows) {
+        if (stateArray[x][y].cellState == 1) {
+          stateArray[x][y].setState(0);
+        } else {
+          stateArray[x][y].setState(1);
+        }
+      }  
+    }
+}
+
+function clearGrid() {
+  for (let i = 0; i < columns; i++) {
+    for (let j = 0; j < rows; j++) {
+      stateArray[i][j].setState(0);
     }
   }
 }
+
+function startRandom() {
+  for (let i = 0; i < columns; i++) {
+    for (j = 0; j < rows; j++) {
+      stateArray[i][j].setState(floor(random(2)));
+    }
+  }
+}
+

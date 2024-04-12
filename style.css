@@ -7,3 +7,21 @@ canvas {
 display: block;
 }
 
+#GridColumn, #description {
+height: 100vh;
+width: 100vw;
+padding: 0;
+margin: 0;
+}
+
+#description {
+text-align: center;
+font-size: 1.5em;
+}
+
+#togglePause {
+content: "Pause";
+}
+#togglePause.clicked {
+content: "Unpause";
+}
