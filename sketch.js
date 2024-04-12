@@ -17,12 +17,11 @@ function setup() {
   frameRate(10);
 
   resolution = 10;
-  canvasWidth = document.getElementById("GridColumn").offsetWidth;
-  canvasHeight = document.getElementById("GridColumn").offsetHeight;
-  console.log(canvasWidth, canvasHeight);
+  canvasWidth = 800;
+  canvasHeight = 600;
 
-  columns = floor(canvasWidth / resolution);
-  rows = floor(canvasHeight / resolution);
+  columns = canvasWidth / resolution;
+  rows = canvasHeight / resolution;
   console.log(rows);
   canvas = createCanvas(canvasWidth, canvasHeight);
   canvas.parent("GridColumn");
@@ -76,6 +75,8 @@ function resume(isPaused) {
   } else { 
     NextArray = stateArray;
   }
+
+
   stateArray = NextArray;
 }
 
@@ -146,13 +147,12 @@ function togglePause() {
 }
 
 function onClick() {
- 
     if (mouseIsPressed) {
       x = floor(mouseX / resolution);
       y = floor(mouseY / resolution);
       console.log(floor(x / resolution));
       console.log(floor(y / resolution));
-      if (x < columns && y < rows) {
+      if (x <= columns && y <= rows) {
         if (stateArray[x][y].cellState == 1) {
           stateArray[x][y].setState(0);
         } else {
@@ -160,21 +160,5 @@ function onClick() {
         }
       }  
     }
-}
-
-function clearGrid() {
-  for (let i = 0; i < columns; i++) {
-    for (let j = 0; j < rows; j++) {
-      stateArray[i][j].setState(0);
-    }
-  }
-}
-
-function startRandom() {
-  for (let i = 0; i < columns; i++) {
-    for (j = 0; j < rows; j++) {
-      stateArray[i][j].setState(floor(random(2)));
-    }
-  }
 }
 
