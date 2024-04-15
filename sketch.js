@@ -63,27 +63,31 @@ function draw() {
     }
   }
   
-  //run click function 
+  //run resume function and input whether game is paused
   if (GamePaused) {
-
     resume(true);
   } else {
-    
     resume(false);
   }
-
 }
 
+//resume function
 function resume(isPaused) {
-  frameRate(10);
+  //run user mouse click check
   onClick();
+  //create the next grid for next frame
   let NextArray = Construct2dArray(columns, rows, true);
+  //checks if game is paused
   if (!isPaused) {
+    //loops through entire grid
     for (let i = 0; i < columns; i++) {
         for (let j = 0; j < rows; j++) {
+          //set the state of current cell
           let state = stateArray[i][j].cellState;
+          //set neighbors to total number of alive cells adjacent to current cel
           let neighbors = tallyNeighbors(stateArray, i, j);
-
+        
+          //checks if the current cell should be alive in the next frame
           if (state == 0 && neighbors == 3) {
             NextArray[i][j].setState(1);
           } else if (state == 1 && (neighbors < 2 || neighbors > 3)) {
@@ -93,9 +97,10 @@ function resume(isPaused) {
           }
         }
       }
-  } else { 
-    NextArray = stateArray;
+  } else {
+    NextArray = stateArray; //if game paused set the next grid frame (grid array) to the current one
   }
+  //update the grid by setting the current grid to the next one
   stateArray = NextArray;
 }
 
