@@ -1,35 +1,51 @@
 //Daniel Lin Create Task
 
+//initialize the grid array
 let stateArray;
+
+//parent div tag
 var gridDiv = document.getElementById('GridColumn');
+
 let resolution;
 let columns;
 let rows;
 let temp;
 let len;
 let GamePaused = false;
+
+//initialize canvas
 let canvas;
+
+//canvas dimensions
 var canvasWidth;
 var canvasHeight;
 
-
+//setup the sketch
 function setup() {
+  //set framerate to 10
   frameRate(10);
 
   resolution = 10;
+
+  //canvas dimensions (size of div)
   canvasWidth = document.getElementById("GridColumn").offsetWidth;
   canvasHeight = document.getElementById("GridColumn").offsetHeight;
-  console.log(canvasWidth, canvasHeight);
 
+  //compute number of columns and rows
   columns = floor(canvasWidth / resolution);
   rows = floor(canvasHeight / resolution);
-  console.log(rows);
+
+  //create canvas using previously declared dimensions
   canvas = createCanvas(canvasWidth, canvasHeight);
+
+  //set the canvas as a child of the parent div to fit into div
   canvas.parent("GridColumn");
 
-  stateArray = CreateStarting2dArray(columns, rows);
+  //create the grid array
+  stateArray = Construct2dArray(columns, rows, false);
 }
 
+//update sketch every frame
 function draw() {
 
   background(0);
@@ -57,7 +73,7 @@ function draw() {
 
 function resume(isPaused) {
   frameRate(10);
-  let NextArray = CreateEmpty2dArray(columns, rows);
+  let NextArray = Construct2dArray(columns, rows, true);
   if (!isPaused) {
     for (let i = 0; i < columns; i++) {
         for (let j = 0; j < rows; j++) {
@@ -94,35 +110,44 @@ function tallyNeighbors(grid, currentCPosition, currentRPosition) {
 }
 
 
-function CreateStarting2dArray(columns, rows) {
-  let randomizedArray = new Array(columns);
-  for (let i = 0; i < randomizedArray.length; i++) {
-    randomizedArray[i] = new Array(rows);
-    for (let j = 0; j < randomizedArray[i].length; j++) {
-      randomizedArray[i][j] = new Cell(floor(random(2)));
+function Construct2dArray(columns, rows, isEmpty) {
+  let TwoDArray = new Array(columns);
+  for (let i = 0; i < TwoDArray.length; i++) {
+    TwoDArray[i] = new Array(rows);
+    for (let j = 0; j < TwoDArray[i].length; j++) {
+      if (isEmpty) {
+        TwoDArray[i][j] = new Cell(null);
+      } else {
+        TwoDArray[i][j] = new Cell(floor(random(2)));
+      }
     }
   }
-  return randomizedArray;
+  return TwoDArray;
 }
 
-function CreateEmpty2dArray(columns, rows) {
-  let emptyArray = new Array(columns);
-  for (let i = 0; i < emptyArray.length; i++) {
-    emptyArray[i] = new Array(rows);
-    for (let j = 0; j < emptyArray[i].length; j++) {
-      emptyArray[i][j] = new Cell(null);
-    }
-  }
-  return emptyArray;
-}
+//create empty array
+// function CreateEmpty2dArray(columns, rows) {
+//   let emptyArray = new Array(columns);
+//   for (let i = 0; i < emptyArray.length; i++) {
+//     emptyArray[i] = new Array(rows);
+//     for (let j = 0; j < emptyArray[i].length; j++) {
+//       emptyArray[i][j] = new Cell(null);
+//     }
+//   }
+//   return emptyArray;
+// }
 
+//cell class
 class Cell {
+  //declare the cell's state
   cellState = 0;
   
+  //constructor to initialize the state of cell
   constructor(state) {
     this.cellState = state;
   }
 
+  //change the cell state to the "setState" parameters
   setState(setState) {
     if (setState == 0) {
       this.cellState = 0;
@@ -135,9 +160,8 @@ class Cell {
   }
 }
 
+//Pause function for toggle button
 function togglePause() {
-  let h1 = document.createElement('H1');
-  h1.innerHTML = "Description";
   if (GamePaused) {
     GamePaused = false;
   } else {
@@ -145,13 +169,13 @@ function togglePause() {
   }
 }
 
+//mouse click cell function
 function onClick() {
- 
     if (mouseIsPressed) {
+      //mouse position (x and y)
       x = floor(mouseX / resolution);
       y = floor(mouseY / resolution);
-      console.log(floor(x / resolution));
-      console.log(floor(y / resolution));
+
       if (x < columns && y < rows) {
         if (stateArray[x][y].cellState == 1) {
           stateArray[x][y].setState(0);
@@ -162,6 +186,7 @@ function onClick() {
     }
 }
 
+//clear the grid (set states to 0)
 function clearGrid() {
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
@@ -170,6 +195,7 @@ function clearGrid() {
   }
 }
 
+//randomize grid states
 function startRandom() {
   for (let i = 0; i < columns; i++) {
     for (j = 0; j < rows; j++) {
