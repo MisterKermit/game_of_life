@@ -3,10 +3,12 @@ html, body {
   padding: 0;
 }
 
+/* formmating for the canvas */
 canvas {
 display: block;
 }
 
+/* formatting for the div that contains the sketch */
 #GridColumn, #description {
 height: 100vh;
 width: 100vw;
@@ -14,14 +16,8 @@ padding: 0;
 margin: 0;
 }
 
+/* formatting for other elements (description) */
 #description {
 text-align: center;
 font-size: 1.5em;
-}
-
-#togglePause {
-content: "Pause";
-}
-#togglePause.clicked {
-content: "Unpause";
 }
