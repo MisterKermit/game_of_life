@@ -47,12 +47,14 @@ function setup() {
 
 //update sketch every frame
 function draw() {
-
+  //set background to black
   background(0);
+  //loop through every cell in the grid
   for (let i = 0; i < columns; i++) {
     for (let j = 0; j < rows; j++) {
       let x = i * resolution;
       let y = j * resolution;
+      //color cell white if state is alive
       if (stateArray[i][j].cellState == 1) {
         fill(255);
         stroke(0);
@@ -60,12 +62,13 @@ function draw() {
       }
     }
   }
-
+  
+  //run click function 
   if (GamePaused) {
-    onClick();
+
     resume(true);
   } else {
-    onClick();
+    
     resume(false);
   }
 
@@ -73,6 +76,7 @@ function draw() {
 
 function resume(isPaused) {
   frameRate(10);
+  onClick();
   let NextArray = Construct2dArray(columns, rows, true);
   if (!isPaused) {
     for (let i = 0; i < columns; i++) {
@@ -95,21 +99,27 @@ function resume(isPaused) {
   stateArray = NextArray;
 }
 
+//Count the neighbors
 function tallyNeighbors(grid, currentCPosition, currentRPosition) {
   let neighborCount = 0;
 
+  //loop through each adjacent cell (including self)
   for (let i = -1; i <= 1; i++) {
     for (let j = -1; j <= 1; j++) {
+      // set selected cell x position to current cell position + position modifier + number of colunns/rows modulo columns/rows to account for edges
       let columnPosition = (currentCPosition + i + columns) % columns;
       let rowPosition = (currentRPosition + j + rows) % rows;
+      //add the state to the neighborCount (either 1 or 0)
       neighborCount += grid[columnPosition][rowPosition].cellState;
     }
   }
+  //subtract own state from total count because it was accounted for in original loop
   neighborCount -= grid[currentCPosition][currentRPosition].cellState;
+  //return the neighbor count
   return neighborCount;
 }
 
-
+//Create 2d Array (take in boolean as parameter to decide whether cell states are randomized)
 function Construct2dArray(columns, rows, isEmpty) {
   let TwoDArray = new Array(columns);
   for (let i = 0; i < TwoDArray.length; i++) {
@@ -125,17 +135,6 @@ function Construct2dArray(columns, rows, isEmpty) {
   return TwoDArray;
 }
 
-//create empty array
-// function CreateEmpty2dArray(columns, rows) {
-//   let emptyArray = new Array(columns);
-//   for (let i = 0; i < emptyArray.length; i++) {
-//     emptyArray[i] = new Array(rows);
-//     for (let j = 0; j < emptyArray[i].length; j++) {
-//       emptyArray[i][j] = new Cell(null);
-//     }
-//   }
-//   return emptyArray;
-// }
 
 //cell class
 class Cell {
